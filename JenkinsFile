@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '📥 Pulling code from GitHub...'
+                // This pulls the code from the Git repository you configure in the job
+                checkout scm 
+            }
+        }
+
+        stage('Execute Python') {
+            steps {
+                echo '🚀 Running Python Script...'
+                // If on Windows, use 'bat'. If on Linux, use 'sh'.
+                bat 'python app.py' 
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Build Successful!'
+        }
+        failure {
+            echo '❌ Build Failed. Check the Console Output.'
+        }
+    }
+}
