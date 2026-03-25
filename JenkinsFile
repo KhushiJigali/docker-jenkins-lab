@@ -6,12 +6,11 @@ pipeline {
                 git 'https://github.com/KhushiJigali/docker-jenkins-lab.git'
             }
         }
-        stage('Welcome') {
-            steps {
-                echo 'Hello! Jenkins has successfully pulled the code.'
-                // Change 'bat' to 'sh' if you are on Linux/Mac
-                bat 'python app.py' 
-            }
-        }
+       stage('Welcome') {
+    steps {
+        echo 'Hello! Jenkins has successfully pulled the code.'
+        sh 'python3 app.py' // Use 'sh' and 'python3' for Linux
+    }
+}
     }
 }
