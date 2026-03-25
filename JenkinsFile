@@ -1,16 +1,35 @@
 pipeline {
     agent any
+
+    environment {
+        DOCKER_USER = "KhushiJigali" 
+        REGISTRY_CREDENTIALS = 'docker-hub-creds'
+        IMAGE_NAME = "my-python-app"
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/KhushiJigali/docker-jenkins-lab.git'
+                checkout scm
             }
         }
-       stage('Welcome') {
-    steps {
-        echo 'Hello! Jenkins has successfully pulled the code.'
-        sh 'python3 app.py' // Use 'sh' and 'python3' for Linux
-    }
-}
+
+        stage('Build Image') {
+            steps {
+                echo '🔨 Building Docker Image...'
+                sh "docker build -t ${DOCKER_USER}/${IMAGE_NAME}:latest ."
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('', "${REGISTRY_CREDENTIALS}") {
+                        echo '📤 Pushing to Docker Hub...'
+                        sh "docker push ${DOCKER_USER}/${IMAGE_NAME}:latest"
+                    }
+                }
+            }
+        }
     }
 }
