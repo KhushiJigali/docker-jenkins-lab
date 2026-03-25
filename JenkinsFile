@@ -1,30 +1,17 @@
 pipeline {
     agent any
-
     stages {
         stage('Checkout') {
             steps {
-                echo '📥 Pulling code from GitHub...'
-                // This pulls the code from the Git repository you configure in the job
-                checkout scm 
+                git 'https://github.com/KhushiJigali/docker-jenkins-lab.git'
             }
         }
-
-        stage('Execute Python') {
+        stage('Welcome') {
             steps {
-                echo '🚀 Running Python Script...'
-                // If on Windows, use 'bat'. If on Linux, use 'sh'.
+                echo 'Hello! Jenkins has successfully pulled the code.'
+                // Change 'bat' to 'sh' if you are on Linux/Mac
                 bat 'python app.py' 
             }
-        }
-    }
-
-    post {
-        success {
-            echo '✅ Build Successful!'
-        }
-        failure {
-            echo '❌ Build Failed. Check the Console Output.'
         }
     }
 }
