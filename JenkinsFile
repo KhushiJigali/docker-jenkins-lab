@@ -23,11 +23,10 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('', "${REGISTRY_CREDENTIALS}") {
-                        echo '📤 Pushing to Docker Hub...'
-                        sh "docker push ${DOCKER_USER}/${IMAGE_NAME}:latest"
-                    }
+                // withCredentials binds your Jenkins secret to variables
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER_VAR')]) {
+                    sh "docker login -u ${DOCKER_USER_VAR} -p ${DOCKER_PASS}"
+                    sh "docker push ${DOCKER_USER}/${IMAGE_NAME}:latest"
                 }
             }
         }
