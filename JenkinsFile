@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = "KhushiJigali" 
+        DOCKER_USER = "khushijigali" 
         REGISTRY_CREDENTIALS = 'docker-hub-creds'
         IMAGE_NAME = "my-python-app"
     }
